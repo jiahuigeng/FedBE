@@ -135,13 +135,12 @@ if __name__ == '__main__':
         device=torch.device('cuda:{}'.format(device_id) if torch.cuda.is_available() and args.gpu != -1 else 'cpu')
         lr = lr_schedule(args.lr, iters, args.rounds)
 
-        running_ep = None
+        running_ep = args.local_ep
         if args.local_sch == "adaptive":
             running_ep = adaptive_schedule(args.local_ep, args.epochs, iters, args.adap_ep)
-        if running_ep != args.local_ep:
-            print("Using adaptive scheduling, local ep = %d."%args.adap_ep)
-        else:
-            running_ep = args.local_ep
+        # if running_ep != args.local_ep:
+        #     print("Using adaptive scheduling, local ep = %d."%args.adap_ep)
+
 
         local = SWAGLocalUpdate(args=args, 
                                 device=device, 
