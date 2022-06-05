@@ -27,7 +27,7 @@ import torch.nn.functional as F
 import torch.nn.init as init
 from torch.nn import Parameter
 
-__all__ = ['ResNet_s' 'resnet32']
+__all__ = ['ResNet_s', 'resnet32']
 
 def _weights_init(m):
     classname = m.__class__.__name__
@@ -44,6 +44,14 @@ class NormedLinear(nn.Module):
     def forward(self, x):
         out = F.normalize(x, dim=1).mm(F.normalize(self.weight, dim=0))
         return out
+
+class LambdaLayer(nn.Module):
+    def __init__(self, lambd):
+        super(LambdaLayer, self).__init__()
+        self.lambd = lambd
+
+    def forward(self, x):
+        return self.lambd(x)
 
 class BasicBlock(nn.Module):
     expansion = 1
