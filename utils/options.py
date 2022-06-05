@@ -89,7 +89,8 @@ def args_parser():
 
     # other arguments
     parser.add_argument('--num_gpu', type=int, default=1, help="GPU ID, -1 for CPU")
-    parser.add_argument('--gpu', type=int, default=1, help="GPU ID, -1 for CPU")
+    parser.add_argument('--gpu', type=int, default=1, help="GPU flag, -1 for CPU")
+    parser.add_argument('--logit_method', type=str, default="vote", help="")
     parser.add_argument('--verbose', action='store_true', help='verbose print')
     parser.add_argument('--seed', type=int, default=1, help='random seed (default: 1)')
     args = parser.parse_args()
