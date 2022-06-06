@@ -149,7 +149,7 @@ class ServerUpdate(object):
     def get_ensemble_logits(self, teachers, inputs, method='mean', global_ep=1000):
         logits = np.zeros((len(teachers), len(inputs), self.args.num_classes))
         for i, t_net in enumerate(teachers):
-          logit = get_input_logits(inputs, t_net.cuda(), is_logit = self.args.is_logit) #Disable res
+          logit = get_input_logits(inputs, t_net.cuda()) #Disable res
           logits[i] = logit
           
         logits = np.transpose(logits, (1, 0, 2)) # batchsize, teachers, 10
