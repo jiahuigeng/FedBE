@@ -149,7 +149,7 @@ if __name__ == '__main__':
                                 server_ids=val_id, 
                                 test=(dataset_test, range(len(dataset_test))), 
                                 num_per_cls=cnts_dict[idx]   )
-
+        print("device:",device)
         teacher = local.train(net=net_glob.to(device), running_ep=running_ep, lr=lr)
         q.put([teacher, idx])
         return [teacher, idx]
@@ -295,7 +295,7 @@ if __name__ == '__main__':
             q = mp.Manager().Queue()
             
             for idx in idxs_users[i:i+num_threads]:
-                p = mp.Process(target=client_train, args=(q, idx%(args.num_gpu), copy.deepcopy(net_glob), iters, idx, server_id, generator))
+                p = mp.Process(target=client_train, args=(q, args.device_id, copy.deepcopy(net_glob), iters, idx, server_id, generator))
                 p.start()
                 processes.append(p)
 
@@ -353,7 +353,7 @@ if __name__ == '__main__':
         q = mp.Manager().Queue()
         print("Server training...")
 
-        p = mp.Process(target=server_train, args=(q, args.num_gpu-1, net_glob, teachers_list, iters))
+        p = mp.Process(target=server_train, args=(q, args.device_id, net_glob, teachers_list, iters))
         p.start()
         p.join()
         
